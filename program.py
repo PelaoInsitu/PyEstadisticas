@@ -1,14 +1,21 @@
 from utilities import *
 from functions.central_tendency_measures import *
 from functions.dispersion_measures import *
+from functions.frecuency import *
 import sys
 
 class Program:
 
+    #Lista en bruto
     list = []
+    #Lista ordenada
     sorted_list = []
+    #Cantidad de datos
     quantity = 0
+    #Opción de menú (poblacional o muestral)
     option = 0
+    #Valores únicos (para frecuencia)
+    unique_values = []
 
 
     @classmethod
@@ -18,14 +25,13 @@ class Program:
         simple_bar()
         title("Script para medidas estadísticas")
         simple_bar()
-        print("")
+        print()
         
 
         while True:
-            print('Escriba: ')
-            print('"done" para continuar / "exit" para cancelar.')
+            print('Escriba: \n"done" para continuar / "exit" para cancelar.')
             value = input("Ingrese un número a la lista: ")
-            print("")
+            print()
 
             if value == "exit":
                 sys.exit()
@@ -37,16 +43,15 @@ class Program:
                     simple_bar()
                     print("")
                     
-                    print("1. Poblacional")
-                    print("2. Muestral")
+                    print("1. Poblacional \n2. Muestral")
                     try:
                         cls.option = int(input("Seleccione un tipo de cálculo: "))
                         break
                     except ValueError:
                         print("Error: Por favor, ingrese un número entero.")
                     
-                print("")
-                print("")
+                print()
+                print()
                 break
 
             if value.isalpha():
@@ -68,7 +73,7 @@ class Program:
             else:
                 title("Cálculo Muestral")
             simple_bar()
-            print("")
+            print()
 
             #Ordenar lista
             cls.sorted_list = sort_list(cls.list)
@@ -81,7 +86,7 @@ class Program:
             print(f"Cantidad de datos:      {cls.quantity}")
             simple_bar()
             print("Medidas de tendencia central")
-            print("")
+            print()
 
 
             #-----MEDIDAS DE TENDENCIA CENTRAL-----
@@ -97,7 +102,7 @@ class Program:
             median = get_median(cls.sorted_list, cls.quantity)
             print(f"Mediana:                {median}")
 
-            print("")
+            print()
             simple_bar()
 
 
@@ -114,20 +119,43 @@ class Program:
             if cls.option == 1:
                 #Varianza poblacional (profe)
                 variance = get_population_variance(cls.sorted_list, cls.quantity, arithmetic_mean)
-                print(f'Varianza pobl:          {variance}')
+                print(f'Varianza pobl:          {round(variance, 2)}')
             else:
                 #Varianza muestral
                 variance = get_sample_variance(cls.sorted_list, cls.quantity, arithmetic_mean)
-                print(f'Varianza muestral:      {variance}')
+                print(f'Varianza muestral:      {round(variance, 2)}')
 
 
             #Desviación estándar o típica
             standard_deviation = get_standard_deviation(variance)
-            print(f"Desviación típica: {standard_deviation}")
+            print(f"Desviación típica:      {round(standard_deviation, 2)}")
 
             #Coeficiente de variación
             coefficient_of_variation = get_coefficient_of_variation(arithmetic_mean, standard_deviation)
-            print(f"Coef. variación: {coefficient_of_variation}%")
+            print(f"Coef. variación:        {round(coefficient_of_variation, 2)}%")
+
+            print()
+            simple_bar()
+
+
+            #-----FRECUENCIAS-----
+            #Valores únicos
+            cls.unique_values = get_unique_values(cls.sorted_list)
+            print(f"Valores únicos: {cls.unique_values}")
+
+            print()
+            simple_bar()
+
+            #Frecuencia absoluta
+            print(f"Frecuencia Absoluta")
+            absolute_frecuency_dictionary = get_absolute_frequency(cls.unique_values, cls.list, cls.quantity)
+
+            print()
+            simple_bar()
+
+            #Frecuencia relativa
+            print(f"Frecuencia relativa")
+            relative_frecuency_dictionary = get_relative_frequency(absolute_frecuency_dictionary, cls.quantity)
         
         else:
             pass
